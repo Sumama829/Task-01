@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Todo List</h1>
+
+    <% if (editingIndex !== null) { %>
+      <form action="/update" method="POST" class="flex gap-2 mb-4">
+        <input type="text" name="todo" value="<%= todos[editingIndex] %>" required class="flex-1 p-2 border rounded-md">
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Update</button>
+        <a href="/" class="px-2 text-red-500">Cancel</a>
+      </form>
+    <% } else { %>
+      <form action="/add" method="POST" class="flex gap-2 mb-4">
+        <input type="text" name="todo" placeholder="New todo" required class="flex-1 p-2 border rounded-md">
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Add</button>
+      </form>
+    <% } %>
+
+    <ul class="space-y-2">
+      <% todos.forEach((todo, index) => { %>
+        <li class="flex justify-between items-center p-2 bg-gray-50 rounded-md shadow-sm">
+          <span class="text-gray-700"><%= todo %></span>
+          <div class="flex gap-2">
+            <form action="/edit" method="POST">
+              <input type="hidden" name="index" value="<%= index %>">
+              <button type="submit" class="px-2 py-1 bg-gray-500 text-white rounded">Edit</button>
+            </form>
+            <form action="/delete" method="POST">
+              <input type="hidden" name="index" value="<%= index %>">
+              <button type="submit" class="px-2 py-1 bg-red-600 text-white rounded">Delete</button>
+            </form>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+</body>
+</html>
